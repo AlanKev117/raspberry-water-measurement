@@ -5,11 +5,11 @@ from gpiozero import DistanceSensor, Device
 from gpiozero.pins.pigpio import PiGPIOFactory
 
 
-ECHO_PIN = os.getenv("ECHO_PIN", 22)
-TRIGGER_PIN = os.getenv("TRIGGER_PIN", 23)
-DEPTH = os.getenv("DEPTH", 0.75)
-EMPTY_SPACE = os.getenv("EMPTY_SPACE", 0.21)
-VOLUME_PER_CM = os.getenv("VOLUME_PER_CM", 10)
+ECHO_PIN = int(os.getenv("ECHO_PIN", 22))
+TRIGGER_PIN = int(os.getenv("TRIGGER_PIN", 23))
+DEPTH = float(os.getenv("DEPTH", 0.75))
+EMPTY_SPACE = float(os.getenv("EMPTY_SPACE", 0.21))
+VOLUME_PER_CM = float(os.getenv("VOLUME_PER_CM", 10))
 
 Device.pin_factory = PiGPIOFactory()
 
