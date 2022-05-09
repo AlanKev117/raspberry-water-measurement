@@ -46,7 +46,13 @@ class TankSensor:
         return 100.0 - (self.sensor.distance - self.empty_space) / self.depth
 
     def get_distance_from_ground(self):
-        return round(self.empty_space + self.depth - self.sensor.distance)
+        distance_from_ground_m = self.empty_space
+        + self.depth - self.sensor.distance
+        distance_from_ground_cm = distance_from_ground_m * 100
+        return round(distance_from_ground_cm)
 
     def get_level_in_volume(self):
-        return self.get_distance_from_ground() * 100 * self.volume_per_cm
+        return self.get_distance_from_ground() * self.volume_per_cm
+
+    def get_distance_from_sensor(self):
+        return round(self.sensor.distance * 100)
