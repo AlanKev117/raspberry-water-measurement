@@ -12,6 +12,6 @@ async def root():
     return {
         "level": sensor.get_level_over_100(),
         "volume": sensor.get_level_in_volume(),
-        "distance_from_sensor": sensor.sensor.distance,
+        "distance_from_sensor": sensor.get_distance_from_sensor(),
         "distance_from_ground": sensor.get_distance_from_ground(),
     }
