@@ -4,12 +4,12 @@ After=multi-user.target
 
 [Service]
 User=pi
-Group=pi
 Type=simple
 Restart=on-failure
 KillMode=control-group
 KillSignal=SIGKILL
-ExecStart=/home/pi/.local/bin/uvicorn --app-dir /home/pi/raspberry-water-measurement/ main:app --port 8000
+WorkingDirectory=/home/pi/raspberry-water-measurement
+ExecStart=/home/pi/.local/bin/uvicorn main:app --port 8000
 Environment=DISPLAY=:0
 
 [Install]
