@@ -1,26 +1,17 @@
-import os
-
 from fastapi import FastAPI
-from gpiozero import DistanceSensor, Device
-from gpiozero.pins.pigpio import PiGPIOFactory
 
-Device.pin_factory = PiGPIOFactory()
+from TankSensor import TankSensor
 
-MAX_DISTANCE = os.getenv("MAX_DISTANCE", 1.17)
-ECHO_PIN = os.getenv("ECHO_PIN", 22)
-TRIGGER_PIN = os.getenv("TRIGGER_PIN", 23)
 
+sensor = TankSensor()
 app = FastAPI()
 
-distance_sensor = DistanceSensor(
-    echo=ECHO_PIN, 
-    trigger=TRIGGER_PIN, 
-    max_distance=MAX_DISTANCE
-)
 
 @app.get("/")
 async def root():
     return {
-        "percentage": distance_sensor.value,
-        "distance": distance_sensor.distance
+        "level": sensor.get_level_over_100(),
+        "volume": sensor.get_level_in_volume(),
+        "distance_from_sensor": sensor.sensor.distance,
+        "distance_from_ground": sensor.distance_from_ground(),
     }
