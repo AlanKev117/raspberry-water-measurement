@@ -7,8 +7,8 @@ from gpiozero.pins.pigpio import PiGPIOFactory
 
 ECHO_PIN = int(os.getenv("ECHO_PIN", 22))
 TRIGGER_PIN = int(os.getenv("TRIGGER_PIN", 23))
-DEPTH = float(os.getenv("DEPTH", 0.75))
-EMPTY_SPACE = float(os.getenv("EMPTY_SPACE", 0.21))
+DEPTH = float(os.getenv("DEPTH", 0.70))
+EMPTY_SPACE = float(os.getenv("EMPTY_SPACE", 0.20))
 VOLUME_PER_CM = float(os.getenv("VOLUME_PER_CM", 10))
 
 Device.pin_factory = PiGPIOFactory()
