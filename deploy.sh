@@ -3,7 +3,7 @@
 set -e
 
 CWD=$(pwd)
-INSTALLATION_DIR=/home/pi/water-level-measurement
+INSTALLATION_DIR=/home/pi/water-level-app
 
 # Install Python dependencies.
 pip3.8 install -r requirements.txt

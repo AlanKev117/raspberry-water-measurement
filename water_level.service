@@ -8,7 +8,7 @@ Type=simple
 Restart=on-failure
 KillMode=control-group
 KillSignal=SIGKILL
-WorkingDirectory=/home/pi/raspberry-water-measurement
+WorkingDirectory=/home/pi/water-level-app
 ExecStart=/home/pi/.local/bin/uvicorn main:app --port 8000
 Environment=DISPLAY=:0
 
