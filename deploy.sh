@@ -9,8 +9,8 @@ INSTALLATION_DIR=/home/pi/water-level-app
 pip3.8 install -r requirements.txt
 
 # Copy source files to installation dir.
-[ -d "$INSTALLATION_DIR" ] || mkdir $INSTALLATION_DIR
-rm -r $INSTALLATION_DIR
+[ -d "$INSTALLATION_DIR" ] && rm -rf $INSTALLATION_DIR
+mkdir $INSTALLATION_DIR
 cp -r $CWD/src/* $INSTALLATION_DIR
 
 # Copy service file to the right location for systemd.
