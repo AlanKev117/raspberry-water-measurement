@@ -27,7 +27,7 @@ class DiscreteWaterLevelSensor(WaterLevelSensor):
         self.pins = list(map(to_input, pin_numbers))
 
 
-    def get_percentage(self) -> int:
+    def get_percentage(self):
         to_active = lambda i: int(i.is_active)
         actives = list(map(to_active, self.pins))
         first_inactive = actives.index(0)
@@ -35,6 +35,6 @@ class DiscreteWaterLevelSensor(WaterLevelSensor):
         return int(first_inactive / self.resolution * 100)
 
 
-    def is_charging(self) -> bool:
+    def is_charging(self):
         # TODO: refactor once new hardware is implemented.
         return False
