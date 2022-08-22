@@ -21,6 +21,6 @@ app = FastAPI()
 @app.get("/")
 async def root():
     return {
-        "level": f"{sensor.get_percentage()} %",
+        "level": f"{sensor.get_percentage()}%",
         "is_charging": sensor.is_charging()
     }
