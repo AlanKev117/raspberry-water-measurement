@@ -1,8 +1,12 @@
 import logging
 
+from gpiozero import SmoothedInputDevice
+from gpiozero import Device
+from gpiozero.pins.pigpio import PiGPIOFactory
+
 from WaterLevelSensor import WaterLevelSensor
 
-from gpiozero import SmoothedInputDevice
+Device.pin_factory = PiGPIOFactory()
 
 
 MAX_RESOLUTION = 27
