@@ -1,12 +1,8 @@
 import logging
 
-from gpiozero import SmoothedInputDevice
-from gpiozero import Device
-from gpiozero.pins.pigpio import PiGPIOFactory
+from gpiozero import DigitalInputDevice
 
 from WaterLevelSensor import WaterLevelSensor
-
-Device.pin_factory = PiGPIOFactory()
 
 
 MAX_RESOLUTION = 27
@@ -27,7 +23,7 @@ class DiscreteWaterLevelSensor(WaterLevelSensor):
         self.resolution = resolution
 
         # Map pin numbers to input objects
-        to_input = lambda pin: SmoothedInputDevice(pin)
+        to_input = lambda pin: DigitalInputDevice(pin)
         self.pins = list(map(to_input, pin_numbers))
 
 
