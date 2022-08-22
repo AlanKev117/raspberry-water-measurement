@@ -3,7 +3,9 @@ Description=Water level sensor
 After=multi-user.target
 
 [Service]
+EnvironmentFile=/home/pi/water-level-app/water.env
 User=pi
+Group=pi
 Type=simple
 Restart=on-failure
 KillMode=control-group

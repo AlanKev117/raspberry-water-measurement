@@ -12,6 +12,7 @@ pip3.8 install -r requirements.txt
 [ -d "$INSTALLATION_DIR" ] && rm -rf $INSTALLATION_DIR
 mkdir $INSTALLATION_DIR
 cp -r $CWD/src/* $INSTALLATION_DIR
+cp -r $CWD/water.env $INSTALLATION_DIR
 
 # Copy service file to the right location for systemd.
 SYSTEMDIR="/etc/systemd/system/"
@@ -24,16 +25,3 @@ SERVICE_FILE="$SYSTEMDIR/water_level.service"
 
 # Enable service to run on boot.
 systemctl enable water_level.service
-
-# Set up env vars to be loaded on boot.
-WATER_ENV_FILE=$CWD/water.env
-
-# Check env vars file is loaded on boot.
-if grep -Fxq "source ${WATER_ENV_FILE}" "/etc/profile" 
-then
-    exit 0
-else
-    echo "" >> /etc/profile
-    echo "source ${WATER_ENV_FILE}" >> /etc/profile
-    echo "" >> /etc/profile
-fi
