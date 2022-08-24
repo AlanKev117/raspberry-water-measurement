@@ -23,16 +23,31 @@ class DiscreteWaterLevelSensor(WaterLevelSensor):
         self.resolution = resolution
 
         # Map pin numbers to input objects
-        to_input = lambda pin: DigitalInputDevice(pin)
+        to_input = lambda pin: DigitalInputDevice(pin, pull_up=True)
         self.pins = list(map(to_input, pin_numbers))
 
 
     def get_percentage(self):
+
+        # Map bool to int for better handling
         to_active = lambda i: int(i.is_active)
         actives = list(map(to_active, self.pins))
-        first_inactive = actives.index(0)
-        assert sum(actives[first_inactive: -1]) == 0, WRONG_ORDER_WARN
-        return int(first_inactive / self.resolution * 100)
+
+        # Get position of first inactive bit.
+        try:
+            first_inactive = actives.index(0)
+        except:
+            first_inactive = self.resolution
+
+        # Assert every bit before first 0 is 1 and the rest is 0.
+        prior_are_on = sum(actives[0: first_inactive]) == first_inactive
+        rest_are_off = sum(actives[first_inactive: -1]) == 0
+
+        # If correct, return the level, otherwise, return None.
+        if prior_are_on and rest_are_off:
+            return int(first_inactive / self.resolution * 100)
+        else:
+            return None
 
 
     def is_charging(self):
