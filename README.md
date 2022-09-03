@@ -10,6 +10,10 @@ built-in dependencies up to date in your Pi device.
 ### Set up your Raspberry Pi (OS, user, network and ssh access, if you wish)
 Follow the [official docs](https://www.raspberrypi.com/documentation/computers/configuration.html) to configure your Pi device as you wish. This project made use of the 32-bit version of Raspberry Pi OS Lite with a [headless configuration](https://www.raspberrypi.com/documentation/computers/configuration.html#setting-up-a-headless-raspberry-pi).
 
+### Enable I2C communication in your Pi
+
+Run `sudo raspi-config` and enable I2C using the menu.
+
 ### Install Python 3.8
 
 This project was developed in Python 3.8. In order for you to install such version, I recommend not to install it via `apt`, since it takes a lot to have `pip` working.
