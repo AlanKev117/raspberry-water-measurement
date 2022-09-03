@@ -2,18 +2,9 @@ import os
 
 from fastapi import FastAPI
 
-from DiscreteWaterLevelSensor import DiscreteWaterLevelSensor
-from misc import to_list
+from SerialWaterLevelSensor import SerialWaterLevelSensor
 
-WATER_PINS = os.environ.get("WATER_PINS", "[]")
-
-pins = to_list(WATER_PINS)
-
-
-if pins is None:
-    sensor = DiscreteWaterLevelSensor()
-else:
-    sensor = DiscreteWaterLevelSensor(pins)
+sensor = SerialWaterLevelSensor()
     
 app = FastAPI()
 
