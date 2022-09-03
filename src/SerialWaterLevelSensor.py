@@ -39,9 +39,7 @@ class SerialWaterLevelSensor(WaterLevelSensor):
 
 
     def get_percentage(self):
-        channel = AnalogIn(self.ads, ADS.P0)
-        voltage = channel.voltage
-        value = channel.value
+        voltage, value = self.get_voltage_and_value()
         now = datetime.now()
         self.update_last_read(value, now)
         percentage = self.slope * (voltage - self.min_voltage)
@@ -49,3 +47,9 @@ class SerialWaterLevelSensor(WaterLevelSensor):
 
     def is_charging(self):
         return self.is_charging_value
+
+    def get_voltage_and_value(self):
+        channel = AnalogIn(self.ads, ADS.P0)
+        voltage = channel.voltage
+        value = channel.value
+        return voltage, value

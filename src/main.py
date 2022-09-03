@@ -22,7 +22,9 @@ async def root():
     percentage = sensor.get_percentage()
     level = f"{percentage}%" if percentage is not None else "calculating..."
     is_charging = sensor.is_charging()
+    voltage, _ = sensor.get_voltage_and_value()
     return {
         "level": level,
-        "is_charging": is_charging
+        "is_charging": is_charging,
+        "voltage": voltage
     }
