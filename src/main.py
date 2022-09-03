@@ -6,8 +6,8 @@ from SerialWaterLevelSensor import SerialWaterLevelSensor
 from SerialWaterLevelSensor import MAX_VOLTAGE
 from SerialWaterLevelSensor import MIN_VOLTAGE
 
-WATER_MIN_VOLTAGE = os.environ.get("WATER_MIN_VOLTAGE", MIN_VOLTAGE)
-WATER_MAX_VOLTAGE = os.environ.get("WATER_MAX_VOLTAGE", MAX_VOLTAGE)
+WATER_MIN_VOLTAGE = float(os.environ.get("WATER_MIN_VOLTAGE", MIN_VOLTAGE))
+WATER_MAX_VOLTAGE = float(os.environ.get("WATER_MAX_VOLTAGE", MAX_VOLTAGE))
 
 sensor = SerialWaterLevelSensor(
     min_voltage=WATER_MAX_VOLTAGE, 
