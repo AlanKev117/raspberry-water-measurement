@@ -19,12 +19,17 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
+    
     percentage = sensor.get_percentage()
-    level = f"{percentage}%" if percentage is not None else "calculating..."
     is_charging = sensor.is_charging()
     value = sensor.get_value()
+    temperature = sensor.get_temperature()
+    acceleration = sensor.get_acceleration()
+
     return {
-        "level": level,
-        "is_charging": is_charging,
-        "value": value
+        "level": f"{percentage}%",
+        "value": value,
+        "is_charging": "yes" if is_charging else "no",
+        "acceleration": acceleration,
+        "temperature": temperature
     }

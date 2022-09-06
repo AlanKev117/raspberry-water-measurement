@@ -46,4 +46,10 @@ class SerialGravityWaterLevelSensor(WaterLevelSensor):
         return self.is_charging_value
 
     def get_value(self):
-        return self.mpu.gyro[1]
+        return self.mpu.acceleration[0]
+    
+    def get_acceleration(self):
+        return self.mpu.acceleration
+
+    def get_temperature(self):
+        return self.mpu.temperature
