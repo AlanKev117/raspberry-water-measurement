@@ -11,7 +11,7 @@ from WaterLevelSensor import WaterLevelSensor
 MIN_VOLTAGE = 2.0
 MAX_VOLTAGE = 3.2
 
-class SerialWaterLevelSensor(WaterLevelSensor):
+class SerialPressureWaterLevelSensor(WaterLevelSensor):
     """Uses the Pi's I2C pins to read data from the ADS1115 ADC module."""
 
     def __init__(self, min_voltage=MIN_VOLTAGE, max_voltage=MAX_VOLTAGE):
