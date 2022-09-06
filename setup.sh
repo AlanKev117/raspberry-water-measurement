@@ -37,6 +37,7 @@ apt -y install dnsmasq
 echo "server=8.8.8.8" >> /etc/dnsmasq.conf 
 echo "server=8.8.4.4" >> /etc/dnsmasq.conf 
 echo "cache-size=1000" >> /etc/dnsmasq.conf
+echo -e "127.0.0.1\t${APP_DOMAIN}" >> /etc/hosts
 
 systemctl restart dnsmasq
 
