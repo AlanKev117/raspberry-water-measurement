@@ -25,3 +25,25 @@ SERVICE_FILE="$SYSTEMDIR/water_level.service"
 
 # Enable service to run on boot.
 systemctl enable water_level.service
+systemctl restart water_level.service
+
+# Install nginx server block
+APP_DOMAIN=tank.xyz
+APP_SERVER_PATH=/etc/nginx/sites-available/$APP_DOMAIN
+APP_SERVER_PATH_LINK=/etc/nginx/sites-enabled/$APP_DOMAIN
+[ -f "$APP_SERVER_PATH" ] && rm $APP_SERVER_PATH
+
+echo <<EOT > $APP_SERVER_PATH
+server {
+    listen 80;
+    server_name $APP_DOMAIN;
+
+    location / {
+        proxy_pass http://localhost:8000;
+    }
+}
+EOT
+
+ln -s APP_SERVER_PATH APP_SERVER_PATH_LINK
+nginx -t
+systemctl reload nginx

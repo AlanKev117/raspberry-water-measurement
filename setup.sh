@@ -1,6 +1,10 @@
+#!/bin/bash
+
+set -e
+
 # Dependencies used by the compiler
-sudo apt install libssl-dev
-sudo apt install libffi-dev
+apt install libssl-dev libffi-dev nginx -Y
+systemctl enable nginx
 
 # Python 3.8 version, change if you wish
 PYTHON_38_VERSION=3.8.13
@@ -24,7 +28,7 @@ make test
 # Puts binaries together
 # altinstall=3.8 is a side Python version in your Pi
 # install=3.8 is the default Python version in your Pi
-sudo make altinstall
+make altinstall
 
 # Remove sources (optional)
 
