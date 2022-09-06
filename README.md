@@ -12,6 +12,10 @@ This project is meant to use a Raspberry Pi (model Zero W+ up to 4B) to help mea
 
 Run `sudo raspi-config` and enable I2C using the menu.
 
+### Set up a static IP addres to your Pi
+
+Edit the `/etc/dhcpcd.conf` file as shown in [the official docs](https://www.raspberrypi.com/documentation/computers/configuration.html#static-ip-addresses) to have a static IP address.
+
 
 ## Setup and wiring
 
