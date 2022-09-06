@@ -3,7 +3,7 @@
 set -e
 
 # Dependencies used by the compiler
-apt install libssl-dev libffi-dev nginx -Y
+apt -y install libssl-dev libffi-dev nginx
 systemctl enable nginx
 
 # Python 3.8 version, change if you wish
