@@ -2,11 +2,50 @@
 
 set -e
 
-# Dependencies used by the compiler
-apt -y install libssl-dev libffi-dev nginx
+### Install and configure nginx
+apt -y install nginx
 systemctl enable nginx
 
-# Python 3.8 version, change if you wish
+# Install nginx server block
+APP_DOMAIN=rotoplas.casa
+APP_SERVER_PATH=/etc/nginx/sites-available/$APP_DOMAIN
+APP_SERVER_PATH_LINK=/etc/nginx/sites-enabled/$APP_DOMAIN
+[ -f "$APP_SERVER_PATH_LINK" ] && rm $APP_SERVER_PATH_LINK
+[ -f "$APP_SERVER_PATH" ] && rm $APP_SERVER_PATH
+
+echo <<EOT > $APP_SERVER_PATH
+server {
+    listen 80;
+    server_name $APP_DOMAIN;
+
+    location / {
+        proxy_pass http://localhost:8000;
+    }
+}
+EOT
+
+# Create symbolic link to site (server block)
+ln -s APP_SERVER_PATH APP_SERVER_PATH_LINK
+nginx -t
+systemctl reload nginx
+
+
+### Install and configure local DNS server
+
+apt -y install dnsmasq
+
+echo "server=8.8.8.8" >> /etc/dnsmasq.conf 
+echo "server=8.8.4.4" >> /etc/dnsmasq.conf 
+echo "cache-size=1000" >> /etc/dnsmasq.conf
+
+systemctl restart dnsmasq
+
+### Install Python 3.8 from source
+
+# Install compiling dependencies
+apt -y install libssl-dev libffi-dev
+
+# Latest Python 3.8 version
 PYTHON_38_VERSION=3.8.13
 
 # Get source from the internet
@@ -32,8 +71,6 @@ make altinstall
 
 # Remove sources (optional)
 
-# run this command in the path where both your tar.xz 
-# file and your Python source live
 cd ..
 rm -r Python-${PYTHON_38_VERSION}
 rm Python-${PYTHON_38_VERSION}.tar.xz
