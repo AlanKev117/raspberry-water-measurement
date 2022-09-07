@@ -16,7 +16,7 @@ class Bouncer:
         self.bouncing_time = timedelta(seconds=bouncing_time)
 
     def call_again(self, method, now):
-        self.last_call_times[method] + self.bouncing_time < now
+        return self.last_call_times[method] + self.bouncing_time < now
 
     def apply(self, method):
         def inner(*args, **kwargs):
