@@ -1,13 +1,15 @@
 import board
-import busio
 from datetime import datetime, timedelta
 
 import adafruit_mpu6050
 
 from WaterLevelSensor import WaterLevelSensor
+from misc import Bouncer
 
 MIN_SLOPE = 2.0
 MAX_SLOPE = 3.2
+
+bouncer = Bouncer()
 
 class SerialGravityWaterLevelSensor(WaterLevelSensor):
     """Uses the Pi's I2C pins to read data from the MPU6050 module."""
@@ -45,11 +47,14 @@ class SerialGravityWaterLevelSensor(WaterLevelSensor):
     def is_charging(self):
         return self.is_charging_value
 
+    @bouncer.apply
     def get_value(self):
         return self.mpu.acceleration[0]
     
+    @bouncer.apply
     def get_acceleration(self):
         return self.mpu.acceleration
 
+    @bouncer.apply
     def get_temperature(self):
         return self.mpu.temperature
