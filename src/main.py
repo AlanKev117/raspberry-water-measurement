@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 from fastapi import FastAPI
 
@@ -31,5 +32,6 @@ async def root():
         "value": value,
         "is_charging": "yes" if is_charging else "no",
         "acceleration": acceleration,
-        "temperature": temperature
+        "temperature": temperature,
+        "time": datetime.now()
     }
