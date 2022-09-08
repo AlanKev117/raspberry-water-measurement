@@ -6,18 +6,18 @@ import adafruit_mpu6050
 from WaterLevelSensor import WaterLevelSensor
 from misc import Bouncer
 
-MIN_SLOPE = 2.0
-MAX_SLOPE = 3.2
+MIN_REF = [-0.66, 13]
+MAX_REF = [5.6, 65]
 
 bouncer = Bouncer()
 
 class SerialGravityWaterLevelSensor(WaterLevelSensor):
     """Uses the Pi's I2C pins to read data from the MPU6050 module."""
 
-    def __init__(self, min_slope=MIN_SLOPE, max_slope=MAX_SLOPE):
-        self.min_slope = min_slope
-        self.max_slope = max_slope
-        self.slope = 100 / (max_slope - min_slope)
+    def __init__(self, ref1=MIN_REF, ref2=MAX_REF):
+        self.ref1 = ref1
+        self.ref2 = ref2
+        self.slope = (ref2[1] - ref1[1]) / (ref2[0] - ref1[0])
         i2c = board.I2C()
         self.mpu = adafruit_mpu6050.MPU6050(i2c)
         self.last_read = None
@@ -40,9 +40,10 @@ class SerialGravityWaterLevelSensor(WaterLevelSensor):
     def get_percentage(self):
         value = self.get_value()
         now = datetime.now()
-        self.update_last_read(value, now)
-        percentage = self.slope * (value - self.min_slope)
-        return round(percentage, 2)
+        percentage = self.slope * (value - self.ref1[0]) + self.ref1[1]
+        percentage = round(percentage, 2)
+        self.update_last_read(percentage, now)
+        return percentage
 
     def is_charging(self):
         return self.is_charging_value
