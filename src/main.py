@@ -29,4 +29,4 @@ async def details():
 
 @app.get("/")
 async def root():
-    return handlers.get_percentage()
+    return handlers.get_minimal_data()

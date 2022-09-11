@@ -9,14 +9,12 @@ class SensorHandlers:
     def get_sensor_data(self, label=None):
         percentage = self.sensor.get_percentage()
         is_charging = self.sensor.is_charging()
-        value = self.sensor.get_value()
         temperature = self.sensor.get_temperature()
         acceleration = self.sensor.get_acceleration()
 
         payload = {
             "level": percentage,
             "label": label,
-            "value": value,
             "is_charging": is_charging,
             "acceleration": acceleration,
             "temperature": temperature,
@@ -25,5 +23,9 @@ class SensorHandlers:
 
         return payload
 
-    def get_percentage(self):
-        return self.sensor.get_percentage()
+    def get_minimal_data(self):
+        return {
+            "level": self.sensor.get_percentage(),
+            "charging": self.sensor.is_charging(),
+            "temperature": self.sensor.get_temperature()
+        }
