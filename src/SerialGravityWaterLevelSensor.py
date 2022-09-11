@@ -1,6 +1,7 @@
-import board
+from math import ceil
 from datetime import datetime, timedelta
 
+import board
 import adafruit_mpu6050
 
 from WaterLevelSensor import WaterLevelSensor
@@ -41,7 +42,7 @@ class SerialGravityWaterLevelSensor(WaterLevelSensor):
         value = self.get_value()
         now = datetime.now()
         percentage = self.slope * (value - self.ref1[0]) + self.ref1[1]
-        percentage = round(percentage, 2)
+        percentage = ceil(percentage)
         self.update_last_read(percentage, now)
         return percentage
 
