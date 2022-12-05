@@ -5,3 +5,4 @@ pigpio==1.78
 uvicorn[standard]==0.17.6
 adafruit-circuitpython-ads1x15==2.2.19
 adafruit-circuitpython-mpu6050==1.1.16
+requests==2.28.1
