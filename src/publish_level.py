@@ -25,7 +25,11 @@ while True:
     measure_response = requests.get(http_endpoint)
     assert measure_response.status_code == 200
     level = measure_response.json()["level"]
+  except:
+    print("Error reading from sensor microservice!")
+    continue
 
+  try:
     data = {
       "level": level,
       "expiration_time": int(time.time() * 1000) + month_millis
@@ -41,7 +45,7 @@ while True:
     print("Response status: ", str(publish.status_code))
 
   except:
-    print("Error reading sensor or sending message.")
+    print("Error sending message to topic!")
     continue
 
   # Wait 10 seconds until next iteration.
