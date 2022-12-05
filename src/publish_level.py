@@ -17,7 +17,7 @@ assert None not in vars, "ERROR: There is at least one variable missing for the 
 # create and format values for HTTPS request
 publish_url = 'https://' + iot_endpoint + ':8443/topics/' + topic + '?qos=1'
 
-month_millis = 1000 * 60 * 60 * 24 * 30
+week_seconds = 60 * 60 * 24 * 7
 
 while True:
 
@@ -32,7 +32,7 @@ while True:
   try:
     data = {
       "level": level,
-      "expiration_time": int(time.time() * 1000) + month_millis
+      "expiration_time": int(time.time()) + week_seconds
     }
     publish_msg = json.dumps(data)
 
