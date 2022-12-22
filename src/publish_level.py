@@ -4,6 +4,8 @@ import time
 
 import requests
 
+MAX_ERROR_COUNT = 10
+
 http_endpoint = os.getenv("HTTP_ENDPOINT", None)
 iot_endpoint = os.getenv("IOT_ENDPOINT", None)
 topic = os.getenv("TOPIC", None)
@@ -18,6 +20,8 @@ assert None not in vars, "ERROR: There is at least one variable missing for the 
 publish_url = 'https://' + iot_endpoint + ':8443/topics/' + topic + '?qos=1'
 
 week_seconds = 60 * 60 * 24 * 7
+
+error_counter = 0
 
 while True:
 
@@ -43,10 +47,15 @@ while True:
       cert=[cert, key])
 
     print("Response status: ", str(publish.status_code))
+    error_counter = 0
 
   except:
     print("Error sending message to topic!")
-    continue
+    error_counter += 1
+    if error_counter >= MAX_ERROR_COUNT:
+      raise Exception("Too many errors trying to publish messages. Killing process...")
+    else:
+      continue
 
   # Wait 10 seconds until next iteration.
   time.sleep(10)
