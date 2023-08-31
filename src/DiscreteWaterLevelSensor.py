@@ -5,7 +5,7 @@ from gpiozero import DigitalInputDevice
 from WaterLevelSensor import WaterLevelSensor
 
 
-MAX_RESOLUTION = 27
+MAX_RESOLUTION = 26
 MIN_RESOLUTION = 1
 
 RESOLUTION_WARN = "Resolution must be between {} and {}."
