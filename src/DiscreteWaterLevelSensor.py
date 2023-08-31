@@ -53,3 +53,6 @@ class DiscreteWaterLevelSensor(WaterLevelSensor):
     def is_charging(self):
         # TODO: refactor once new hardware is implemented.
         return False
+
+    def get_temperature(self):
+        return 0.0

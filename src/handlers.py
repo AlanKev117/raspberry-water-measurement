@@ -26,6 +26,5 @@ class SensorHandlers:
     def get_minimal_data(self):
         return {
             "level": self.sensor.get_percentage(),
-            "charging": self.sensor.is_charging(),
-            "temperature": self.sensor.get_temperature()
+            "charging": self.sensor.is_charging()
         }
