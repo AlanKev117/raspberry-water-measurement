@@ -29,6 +29,7 @@ while True:
     measure_response = requests.get(http_endpoint)
     assert measure_response.status_code == 200
     level = measure_response.json()["level"]
+    assert level not in (None, "null")
   except:
     print("Error reading from sensor microservice!")
     continue
