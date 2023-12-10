@@ -2,11 +2,12 @@
 
 set -e
 
+SKIP_PIP_INSTALL=$1
 CWD=$(pwd)
 INSTALLATION_DIR=/home/pi/water-level-app
 
 # Install Python dependencies.
-pip3.8 install -r requirements.txt
+[ "$SKIP_PIP_INSTALL" == "skip_pip_install" ] || pip3.8 install -r requirements.txt
 
 # Copy source files to installation dir.
 [ -d "$INSTALLATION_DIR" ] && rm -rf $INSTALLATION_DIR
