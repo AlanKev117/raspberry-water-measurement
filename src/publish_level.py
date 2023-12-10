@@ -36,7 +36,7 @@ def read_sensor():
     raise Exception(f"Sensor response was unsuccessful: {status_code}")
   
   # Parse json response
-  payload = response.json()
+  payload = sensor_response.json()
   level = payload["level"]
 
   # Assert body has a valid value
