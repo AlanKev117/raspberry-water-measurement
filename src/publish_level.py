@@ -4,59 +4,64 @@ import time
 
 import requests
 
-MAX_ERROR_COUNT = 10
+# Read variables from service environment.
+local_sensor_endpoint = os.getenv("LOCAL_SENSOR_ENDPOINT")
+aws_iot_host = os.getenv("AWS_IOT_HOST")
+aws_iot_topic = os.getenv("AWS_IOT_TOPIC")
+aws_iot_cert = os.getenv("AWS_IOT_CERT")
+aws_iot_key = os.getenv("AWS_IOT_KEY")
 
-http_endpoint = os.getenv("HTTP_ENDPOINT", None)
-iot_endpoint = os.getenv("IOT_ENDPOINT", None)
-topic = os.getenv("TOPIC", None)
-cert = os.getenv("CERT", None)
-key = os.getenv("KEY", None)
-
+# Assert there are no missing variables.
 vars = [http_endpoint, iot_endpoint, topic, cert, key]
+assert None not in vars, "Missing variables for publisher initialization."
 
-assert None not in vars, "ERROR: There is at least one variable missing for the level publisher!"
-
-# create and format values for HTTPS request
-publish_url = 'https://' + iot_endpoint + ':8443/topics/' + topic + '?qos=1'
-
+# Runtime variables.
+aws_iot_endpoint = f'https://{aws_iot_host}:8443/topics/{awS_iot_topic}?qos=1'
 week_seconds = 60 * 60 * 24 * 7
+credentials = [aws_iot_cert, aws_iot_key]
 
-error_counter = 0
+def read_sensor():
+  # Read data from sensor
+  sensor_response = requests.get(local_sensor_endpoint)
+  status_code = sensor_response.status_code
+  
+  # Assert response was successful
+  if status_code != 200:
+    raise Exception(f"Sensor response was unsuccessful: {status_code}")
+  
+  # Parse json response
+  payload = response.json()
+  level = payload["level"]
 
+  # Assert body has a valid value
+  if level in (None, "null"):
+    raise Exception(f"Sensor measurement invalid: {level}")
+  
+  return level
+
+def create_message(level)
+  # Create message for IoT topic
+  data = {
+    "level": level,
+    "expiration_time": int(time.time()) + week_seconds
+  }
+  message = json.dumps(data)
+  return message
+
+def publish_message(message):
+  response = requests.post(aws_iot_endpoint, data=message, cert=credentials)
+  status_code = response.status_code
+  if status_code != 200:
+    raise Exception(f"Error publishing message. Status code: {status_code}, response: {response.text}")
+  
 while True:
-
+  
   try:
-    measure_response = requests.get(http_endpoint)
-    assert measure_response.status_code == 200
-    level = measure_response.json()["level"]
-    assert level not in (None, "null")
-  except:
-    print("Error reading from sensor microservice!")
-    continue
-
-  try:
-    data = {
-      "level": level,
-      "expiration_time": int(time.time()) + week_seconds
-    }
-    publish_msg = json.dumps(data)
-
-    # Publish measurement
-    publish = requests.request('POST',
-      publish_url,
-      data=publish_msg,
-      cert=[cert, key])
-
-    print("Response status: ", str(publish.status_code))
-    error_counter = 0
-
-  except:
-    print("Error sending message to topic!")
-    error_counter += 1
-    if error_counter >= MAX_ERROR_COUNT:
-      raise Exception("Too many errors trying to publish messages. Killing process...")
-    else:
-      continue
-
-  # Wait 10 seconds until next iteration.
+    level = read_sensor()
+    message = create_message(level)
+    publish_message(message)
+    print(f"Water level published to IoT: {level}")
+  except Exception as e:
+    print(f"An error ocurred: {e}")
+  
   time.sleep(10)
