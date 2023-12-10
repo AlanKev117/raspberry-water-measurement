@@ -39,7 +39,7 @@ def read_sensor():
   
   return level
 
-def create_message(level)
+def create_message(level):
   # Create message for IoT topic
   data = {
     "level": level,
