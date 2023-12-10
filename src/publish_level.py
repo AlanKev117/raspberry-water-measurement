@@ -12,11 +12,14 @@ aws_iot_cert = os.getenv("AWS_IOT_CERT")
 aws_iot_key = os.getenv("AWS_IOT_KEY")
 
 # Assert there are no missing variables.
-vars = [http_endpoint, iot_endpoint, topic, cert, key]
-assert None not in vars, "Missing variables for publisher initialization."
+assert local_sensor_endpoint is not None, "Missing sensor endpoint"
+assert aws_iot_host is not None, "Missing AWS IoT host"
+assert aws_iot_topic is not None, "Missing AWS IoT topic"
+assert aws_iot_cert is not None, "Missing AWS IoT cert"
+assert aws_iot_key is not None, "Missing AWS IoT key"
 
 # Runtime variables.
-aws_iot_endpoint = f'https://{aws_iot_host}:8443/topics/{awS_iot_topic}?qos=1'
+aws_iot_endpoint = f'https://{aws_iot_host}:8443/topics/{aws_iot_topic}?qos=1'
 week_seconds = 60 * 60 * 24 * 7
 credentials = [aws_iot_cert, aws_iot_key]
 
@@ -49,8 +52,11 @@ def create_message(level):
   return message
 
 def publish_message(message):
+  # Try to publish message
   response = requests.post(aws_iot_endpoint, data=message, cert=credentials)
   status_code = response.status_code
+  
+  # Raise error if response was unsuccessful
   if status_code != 200:
     raise Exception(f"Error publishing message. Status code: {status_code}, response: {response.text}")
   
