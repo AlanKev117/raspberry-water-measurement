@@ -1,8 +1,11 @@
 import os
 import json
 import time
+import logging
 
 import requests
+
+logging.basicConfig(level=logging.INFO)
 
 # Read variables from service environment.
 local_sensor_endpoint = os.getenv("LOCAL_SENSOR_ENDPOINT")
@@ -67,7 +70,9 @@ while True:
     message = create_message(level)
     publish_message(message)
     print(f"Water level published to IoT: {level}")
+    logging.info(f"Water level published to IoT: {level}")
   except Exception as e:
     print(f"An error ocurred: {e}")
+    logging.error(f"An error ocurred: {e}")
   
   time.sleep(10)
