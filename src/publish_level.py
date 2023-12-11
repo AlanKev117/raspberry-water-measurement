@@ -4,6 +4,7 @@ import time
 import logging
 
 import requests
+import AWSIoTPythonSDK.MQTTLib as AWSIoTPyMQTT
 
 logging.basicConfig(level=logging.INFO)
 
@@ -13,6 +14,7 @@ aws_iot_host = os.getenv("AWS_IOT_HOST")
 aws_iot_topic = os.getenv("AWS_IOT_TOPIC")
 aws_iot_cert = os.getenv("AWS_IOT_CERT")
 aws_iot_key = os.getenv("AWS_IOT_KEY")
+aws_iot_root = os.getenv("AWS_IOT_ROOT")
 
 # Assert there are no missing variables.
 assert local_sensor_endpoint is not None, "Missing sensor endpoint"
@@ -22,9 +24,14 @@ assert aws_iot_cert is not None, "Missing AWS IoT cert"
 assert aws_iot_key is not None, "Missing AWS IoT key"
 
 # Runtime variables.
-aws_iot_endpoint = f'https://{aws_iot_host}:8443/topics/{aws_iot_topic}?qos=1'
 week_seconds = 60 * 60 * 24 * 7
-credentials = [aws_iot_cert, aws_iot_key]
+
+# IoT client config
+client_id = "water_level_sensor"
+iot_client = AWSIoTPyMQTT.AWSIoTMQTTClient(client_id)
+iot_client.configureEndpoint(aws_iot_host, 8883)
+iot_client.configureCredentials(aws_iot_root, aws_iot_key, aws_iot_cert)
+iot_client.connect()
 
 def read_sensor():
   # Read data from sensor
@@ -55,13 +62,7 @@ def create_message(level):
   return message
 
 def publish_message(message):
-  # Try to publish message
-  response = requests.post(aws_iot_endpoint, data=message, cert=credentials)
-  status_code = response.status_code
-  
-  # Raise error if response was unsuccessful
-  if status_code != 200:
-    raise Exception(f"Error publishing message. Status code: {status_code}, response: {response.text}")
+  iot_client.publish(aws_iot_topic, message, 1)   
   
 while True:
   
