@@ -29,25 +29,17 @@ class DiscreteWaterLevelSensor(WaterLevelSensor):
 
     def get_percentage(self):
 
-        # Map bool to int for better handling
-        to_active = lambda i: int(i.is_active)
-        actives = list(map(to_active, self.pins))
+        marks = self.get_digital_marks()
 
-        # Get position of first inactive bit.
-        try:
-            first_inactive = actives.index(0)
-        except:
-            first_inactive = self.resolution
+        # Validate active sensors vs last active
+        active_marks = sum(marks)
+        last_active = self.get_last_active(marks)
 
-        # Assert every bit before first 0 is 1 and the rest is 0.
-        prior_are_on = sum(actives[0: first_inactive]) == first_inactive
-        rest_are_off = sum(actives[first_inactive: -1]) == 0
+        if active_marks != last_active:
+            print(f"Warning: some sensors might be damaged - 0 {marks} {len(marks) - 1}")
 
-        # If correct, return the level, otherwise, return None.
-        if prior_are_on and rest_are_off:
-            return int(first_inactive / self.resolution * 100)
-        else:
-            return None
+        percentage = int(last_active / self.resolution * 100)
+        return percentage
 
 
     def is_charging(self):
@@ -56,3 +48,21 @@ class DiscreteWaterLevelSensor(WaterLevelSensor):
 
     def get_temperature(self):
         return 0.0
+
+    def get_digital_marks(self):
+        # Map bool to int for better handling
+        to_active = lambda i: int(i.is_active)
+        marks = list(map(to_active, self.pins))
+        return marks
+
+    def get_last_active(self, items):
+        # Reverse array to search from right
+        ritems = items[::-1]
+        # Search number 1 in list
+        try:
+            i = ritems.index(1)
+            last_active = len(ritems) - i
+        except:
+            last_active = 0
+        # Return the index adjusted
+        return last_active
