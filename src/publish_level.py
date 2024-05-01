@@ -76,4 +76,4 @@ while True:
     print(f"An error ocurred: {e}")
     logging.error(f"An error ocurred: {e}")
   
-  time.sleep(10)
+  time.sleep(30)
