@@ -4,7 +4,6 @@ from gpiozero import DigitalInputDevice
 
 from WaterLevelSensor import WaterLevelSensor
 
-
 MAX_RESOLUTION = 26
 MIN_RESOLUTION = 1
 
@@ -23,8 +22,7 @@ class DiscreteWaterLevelSensor(WaterLevelSensor):
         self.resolution = resolution
 
         # Map pin numbers to input objects
-        to_input = lambda pin: DigitalInputDevice(pin, pull_up=True)
-        self.pins = list(map(to_input, pin_numbers))
+        self.pins = [DigitalInputDevice(pin, pull_up=True) for pin in pin_numbers]
 
 
     def get_percentage(self):
@@ -51,8 +49,7 @@ class DiscreteWaterLevelSensor(WaterLevelSensor):
 
     def get_digital_marks(self):
         # Map bool to int for better handling
-        to_active = lambda i: int(i.is_active)
-        marks = list(map(to_active, self.pins))
+        marks = [int(pin.is_active) for pin in self.pins]
         return marks
 
     def get_last_active(self, items):

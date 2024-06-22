@@ -2,3 +2,4 @@ __pycache__
 *.crt
 *.key
 *.pem
+env

@@ -32,14 +32,6 @@ elif WATER_SENSOR_TYPE == "discrete":
 handlers = SensorHandlers(sensor)
 app = FastAPI()
 
-@app.get("/label/{label}")
-async def label(label: int):
-    return handlers.get_sensor_data(label)
-
-@app.get("/details")
-async def details():
-    return handlers.get_sensor_data()
-
 @app.get("/")
 async def root():
     return handlers.get_minimal_data()

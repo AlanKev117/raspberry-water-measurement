@@ -47,7 +47,7 @@ systemctl restart dnsmasq
 apt -y install libssl-dev libffi-dev
 
 # Latest Python 3.8 version
-PYTHON_38_VERSION=3.8.13
+PYTHON_38_VERSION=3.8.19
 
 # Get source from the internet
 wget https://www.python.org/ftp/python/${PYTHON_38_VERSION}/Python-${PYTHON_38_VERSION}.tar.xz
