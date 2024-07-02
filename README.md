@@ -27,12 +27,12 @@ The developer's preferred wiring for a 14-bit resolution discrete sensor is deta
 
 > Note: the wiring can be overriden by the user to fit their needs.
 
-## Integration with Alexa (optional)
+## 2. Integration with Alexa (optional)
 
 
-## 2. Deployment
+## 3. Deployment
 
-### 2.1 Prepare `level_sensor.env` file
+### 3.1 Prepare `level_sensor.env` file
 
 Create a file under the name `level_sensor.env` and place the proper env vars as described below
 
@@ -52,7 +52,7 @@ WATER_MIN_REF="[-0.66, 13]" # calibrate with your values
 WATER_MAX_REF="[5.6, 65]" # calibrate with your values
 ```
 
-### 2.2 Prepare `level_publisher.env` file (optional, to work with Alexa)
+### 3.2 Prepare `level_publisher.env` file (optional, to work with Alexa)
 
 Create a file under the name `level_publisher.env` and place the proper env vars as described below
 
@@ -67,19 +67,26 @@ AWS_IOT_KEY=your-private.pem.key
 AWS_IOT_ROOT=YourAmazonRootCA1.pem
 ```
 
-### 2.3 Install Python from source
+### 3.3 Install Python and Rust
 
 ```bash
-sudo bash setup.sh [test] # optional flag to run `make test`
+# It takes 3 hours without test, more with it.
+sudo bash setup_python.sh [test] # optional flag to run `make test`
+
+# It takes 5 minutes
+sudo bash setup_rust.sh
+
+# After both languages get installed, restart your ssh connection
+exit
 ```
 
-### 2.4 Deploy into your Pi
+### 3.4 Deploy into your Pi
 
 ```bash
-sudo deploy [reqs] # optional flag to install/upgrade Python dependencies
+sudo bash deploy.sh [reqs] # optional flag to install/upgrade Python dependencies
 ```
 
-## Check the water level of your water tank
+## 4. Check the water level of your water tank
 
 With the IP address of your Pi, enter the following URL in your browser:
 

@@ -10,7 +10,7 @@ TEST_FLAG=$1
 ### Install Python 3 from source
 
 # Install compiling dependencies
-echo "[INFO] Downloading installation dependencies..."
+echo "[INFO] Downloading Python installation dependencies..."
 apt -y install libssl-dev libffi-dev
 
 # Latest Python version
