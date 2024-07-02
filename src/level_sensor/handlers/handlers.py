@@ -1,6 +1,4 @@
-from datetime import datetime
-
-from WaterLevelSensor import WaterLevelSensor
+from ..sensor.WaterLevelSensor import WaterLevelSensor
 
 class SensorHandlers:
     def __init__(self, sensor: WaterLevelSensor):

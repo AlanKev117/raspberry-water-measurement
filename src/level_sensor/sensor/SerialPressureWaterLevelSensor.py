@@ -6,7 +6,7 @@ import adafruit_ads1x15.ads1115 as ADS
 from adafruit_ads1x15.ads1x15 import Mode
 from adafruit_ads1x15.analog_in import AnalogIn
 
-from WaterLevelSensor import WaterLevelSensor
+from .WaterLevelSensor import WaterLevelSensor
 
 MIN_VOLTAGE = 2.0
 MAX_VOLTAGE = 3.2

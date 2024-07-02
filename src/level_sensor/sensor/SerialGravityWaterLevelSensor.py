@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 import board
 import adafruit_mpu6050
 
-from WaterLevelSensor import WaterLevelSensor
-from misc import Bouncer
+from .WaterLevelSensor import WaterLevelSensor
+from ..tools.misc import Bouncer
 
 MIN_REF = [-0.66, 13]
 MAX_REF = [5.6, 65]

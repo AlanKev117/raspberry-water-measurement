@@ -11,7 +11,7 @@ Restart=on-failure
 KillMode=control-group
 KillSignal=SIGKILL
 WorkingDirectory=/home/pi/water-level-app
-ExecStart=/home/pi/.local/bin/uvicorn main:app --port 8080
+ExecStart=/home/pi/.local/bin/uvicorn src.level_sensor.main:app --port 8080 --host 0.0.0.0
 Environment=DISPLAY=:0
 
 [Install]
