@@ -32,9 +32,9 @@ The developer's preferred wiring for a 14-bit resolution discrete sensor is deta
 
 ## 2. Deployment
 
-### 2.1 Prepare `sensor.env` file
+### 2.1 Prepare `level_sensor.env` file
 
-Create a file under the name `sensor.env` and place the proper env vars as described below
+Create a file under the name `level_sensor.env` and place the proper env vars as described below
 
 ```bash
 # For discrete sensors (recommended)
@@ -52,7 +52,9 @@ WATER_MIN_REF="[-0.66, 13]" # calibrate with your values
 WATER_MAX_REF="[5.6, 65]" # calibrate with your values
 ```
 
-### 2.2 Prepare `publisher.env` file (optional, to work with Alexa)
+### 2.2 Prepare `level_publisher.env` file (optional, to work with Alexa)
+
+Create a file under the name `level_publisher.env` and place the proper env vars as described below
 
 ```bash
 LOCAL_SENSOR_ENDPOINT=http://localhost:8000
