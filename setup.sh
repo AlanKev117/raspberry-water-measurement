@@ -1,77 +1,54 @@
 #!/bin/bash
 
+# [USAGE]
+# sudo bash setup.sh [test]
+
 set -e
 
-### Install and configure nginx
-apt -y install nginx
-systemctl enable nginx
+TEST_FLAG=$1
 
-# Install nginx server block
-APP_DOMAIN=rotoplas.casa
-APP_SERVER_PATH=/etc/nginx/sites-available/$APP_DOMAIN
-APP_SERVER_PATH_LINK=/etc/nginx/sites-enabled/$APP_DOMAIN
-[ -f "$APP_SERVER_PATH_LINK" ] && rm $APP_SERVER_PATH_LINK
-[ -f "$APP_SERVER_PATH" ] && rm $APP_SERVER_PATH
-
-echo <<EOT > $APP_SERVER_PATH
-server {
-    listen 80;
-    server_name $APP_DOMAIN;
-
-    location / {
-        proxy_pass http://localhost:8000;
-    }
-}
-EOT
-
-# Create symbolic link to site (server block)
-ln -s APP_SERVER_PATH APP_SERVER_PATH_LINK
-nginx -t
-systemctl reload nginx
-
-
-### Install and configure local DNS server
-
-apt -y install dnsmasq
-
-echo "server=8.8.8.8" >> /etc/dnsmasq.conf 
-echo "server=8.8.4.4" >> /etc/dnsmasq.conf 
-echo "cache-size=1000" >> /etc/dnsmasq.conf
-echo -e "127.0.0.1\t${APP_DOMAIN}" >> /etc/hosts
-
-systemctl restart dnsmasq
-
-### Install Python 3.8 from source
+### Install Python 3 from source
 
 # Install compiling dependencies
+echo "[INFO] Downloading installation dependencies..."
 apt -y install libssl-dev libffi-dev
 
-# Latest Python 3.8 version
-PYTHON_38_VERSION=3.8.19
+# Latest Python version
+PYTHON_VERSION=3.12.4
 
 # Get source from the internet
-wget https://www.python.org/ftp/python/${PYTHON_38_VERSION}/Python-${PYTHON_38_VERSION}.tar.xz
+echo "[INFO] Downloading Python release ${PYTHON_VERSION}..."
+wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tar.xz
 
 # Extract and cd to Python sources dir.
-tar -xf Python-${PYTHON_38_VERSION}.tar.xz
-cd Python-${PYTHON_38_VERSION}
+echo "[INFO] Extracting release source files..."
+tar -xf Python-${PYTHON_VERSION}.tar.xz
+cd Python-${PYTHON_VERSION}
 
 # Checks for installation requirements
+echo "[INFO] Validating installation requirements for Python release..."
 ./configure
 
 # Compile sources into objects
+echo "[INFO] Preparing Python release for install..."
 make
 
-# optional, it may not finish via SSH
-make test
+# Optional, it may not finish via SSH
+if [ "${TEST_FLAG}" = "test" ]
+then
+    echo "[INFO] Testing Python release..."
+    make test
+fi
 
 # Puts binaries together
-# altinstall=3.8 is a side Python version in your Pi
-# install=3.8 is the default Python version in your Pi
+# make altinstall => installs the downloaded release as an alternative one
+# make install => installs the downloaded release as the main one for the system
+echo "[INFO] Installing Python release..."
 make altinstall
 
-# Remove sources (optional)
-
+# Clean up temporary files.
+echo "[INFO] Python ${PYTHON_VERSION} installed successfully!" 
+echo "[INFO] Cleaning up files..."
 cd ..
-rm -r Python-${PYTHON_38_VERSION}
-rm Python-${PYTHON_38_VERSION}.tar.xz
+rm -r Python-${PYTHON_VERSION}
+rm Python-${PYTHON_VERSION}.tar.xz

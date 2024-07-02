@@ -3,7 +3,7 @@ Description=Water level sensor HTTP local microservice
 After=multi-user.target
 
 [Service]
-EnvironmentFile=/home/pi/water-level-app/water.env
+EnvironmentFile=/home/pi/water-level-app/level_sensor.env
 User=pi
 Group=pi
 Type=simple
@@ -11,7 +11,7 @@ Restart=on-failure
 KillMode=control-group
 KillSignal=SIGKILL
 WorkingDirectory=/home/pi/water-level-app
-ExecStart=/home/pi/.local/bin/uvicorn main:app --port 8000
+ExecStart=/home/pi/.local/bin/uvicorn main:app --port 8080
 Environment=DISPLAY=:0
 
 [Install]

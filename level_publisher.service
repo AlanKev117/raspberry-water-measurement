@@ -3,7 +3,7 @@ Description=Water level IoT publisher
 After=multi-user.target
 
 [Service]
-EnvironmentFile=/home/pi/water-level-app/publisher.env
+EnvironmentFile=/home/pi/water-level-app/level_publisher.env
 User=pi
 Group=pi
 Type=simple
@@ -11,7 +11,7 @@ Restart=on-failure
 KillMode=control-group
 KillSignal=SIGKILL
 WorkingDirectory=/home/pi/water-level-app
-ExecStart=/usr/local/bin/python3.8 publish_level.py
+ExecStart=/usr/local/bin/python3.12 publish_level.py
 Environment=DISPLAY=:0
 
 [Install]
