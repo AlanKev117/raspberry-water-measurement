@@ -44,7 +44,7 @@ iot_client.connect()
 
 def read_sensor():
   # Read data from sensor
-  sensor_response = requests.get(local_sensor_endpoint)
+  sensor_response = requests.get(local_sensor_endpoint + "/cli")
   status_code = sensor_response.status_code
   
   # Assert response was successful
