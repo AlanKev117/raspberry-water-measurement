@@ -22,6 +22,7 @@ assert aws_iot_host is not None, "Missing AWS IoT host"
 assert aws_iot_topic is not None, "Missing AWS IoT topic"
 assert aws_iot_cert is not None, "Missing AWS IoT cert"
 assert aws_iot_key is not None, "Missing AWS IoT key"
+assert aws_iot_root is not None, "Missing AWS IoT root"
 
 # Runtime variables.
 week_seconds = 60 * 60 * 24 * 7
@@ -35,7 +36,7 @@ iot_client.connect()
 
 def read_sensor():
   # Read data from sensor
-  sensor_response = requests.get(local_sensor_endpoint)
+  sensor_response = requests.get(local_sensor_endpoint + "/cli")
   status_code = sensor_response.status_code
   
   # Assert response was successful

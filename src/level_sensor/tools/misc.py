@@ -1,5 +1,5 @@
-from datetime import datetime, timedelta
 import json
+from datetime import datetime, timedelta
 
 def to_list(json_list_string: str):
     try:
@@ -33,3 +33,4 @@ class Bouncer:
                 return self.last_call_results[method]
         
         return inner
+    

@@ -2,24 +2,111 @@
 
 This project is meant to use a Raspberry Pi (model Zero W+ up to 4B) to help measure water level in a water tank placed on the roof of a house.
 
-## Prerequirements
+## 1. Set up the Raspberry Pi
 
-### Set up your Raspberry Pi (OS, user, network and ssh access, if you wish)
+### 1.1 Install Raspberry Pi OS and configure user, network and ssh access
 - Flash Raspberry Pi OS Lite/Full (32-bit) in a microSD card.
 - You can follow a [headless configuration](https://www.raspberrypi.com/documentation/computers/configuration.html#setting-up-a-headless-raspberry-pi) or use the [advanced menu](https://www.raspberrypi.com/documentation/computers/getting-started.html#advanced-options) in the Raspberry Pi Imager tool to setup the user, network, and ssh.
 
-### Enable I2C communication in your Pi
+### 1.2 Enable I2C communication in your Pi (serial sensors only)
 
-Run `sudo raspi-config` and enable I2C using the menu.
+If you are planning to use a serial sensor to read the level of your water tank, enable I2C on your Pi with the following command:
 
-### Set up a static IP addres to your Pi
+```bash 
+sudo raspi-config # then, enable I2C using the UI menu
+```
+### 1.3 Set up a static IP addres to your Pi
 
 Edit the `/etc/dhcpcd.conf` file as shown in [the official docs](https://www.raspberrypi.com/documentation/computers/configuration.html#static-ip-addresses) to have a static IP address.
 
+### 1.4 Wire your sensor (discrete sensors only)
 
-## Setup and wiring
+The developer's preferred wiring for a 14-bit resolution discrete sensor is detailed in the following picture:
 
-## Deployment
+![Wiring schema](labeled_pinout.png)
+
+> Note: the wiring can be overriden by the user to fit their needs.
+
+## 2. Integration with Alexa (optional)
 
 
-## Local execution and usage
+## 3. Deployment
+
+### 3.1 Prepare `level_sensor.env` file
+
+Create a file under the name `level_sensor.env` and place the proper env vars as described below
+
+```bash
+# For discrete sensors (recommended)
+WATER_SENSOR="discrete"
+WATER_PINS="[14,15,18,23,24,25,8,7,12,16,20,21,26,19]" # override with your list (longer, shorter or with different GPIO pins)
+
+# For serial sensors (to be deprecated)
+WATER_SENSOR="serial"
+WATER_MIN_VOLTAGE="2.0" # calibrate with your values
+WATER_MAX_VOLTAGE="3.14" # calibrate with your values
+
+# For gravity sensors (to be deprecated)
+WATER_SENSOR="gravity"
+WATER_MIN_REF="[-0.66, 13]" # calibrate with your values
+WATER_MAX_REF="[5.6, 65]" # calibrate with your values
+```
+
+### 3.2 Prepare `level_publisher.env` file (optional, to work with Alexa)
+
+Create a file under the name `level_publisher.env` and place the proper env vars as described below
+
+```bash
+LOCAL_SENSOR_ENDPOINT=http://localhost:8000
+
+# All files below must be placed in a directory named "iot"
+AWS_IOT_HOST="Your AWS IoT endpoint" 
+AWS_IOT_TOPIC="Your AWS IoT topic"
+AWS_IOT_CERT=your-certificate.pem.crt
+AWS_IOT_KEY=your-private.pem.key
+AWS_IOT_ROOT=YourAmazonRootCA1.pem
+```
+
+### 3.3 Install Python
+
+From source, Python 3.12, not recommended:
+
+```bash
+# It takes 3 hours without test, more with it.
+sudo bash setup_python.sh [test] # optional flag to run `make test`
+
+# It takes 5 minutes
+sudo bash setup_rust.sh
+
+# After both languages get installed, restart your ssh connection
+exit
+```
+
+From `apt`:
+
+```bash
+sudo apt update
+sudo apt upgrade
+sudo apt install software-properties-common
+sudo apt update
+sudo apt install python3.9-full
+```
+
+### 3.4 Deploy into your Pi
+
+```bash
+sudo bash deploy.sh [reqs] # optional flag to install/upgrade Python dependencies
+```
+
+## 4. Check the water level of your water tank
+
+With the IP address of your Pi, enter the following URL in your browser:
+
+```
+http://{IP_ADDRESS_OF_YOUR_PI}:8080
+``` 
+
+or, `curl` the following URL via CLI
+```bash
+curl http://{IP_ADDRESS_OF_YOUR_PI}:8080/cli
+```
