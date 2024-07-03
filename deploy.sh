@@ -14,7 +14,7 @@ APP_DIR=/home/pi/water-level-app
 # Install Python dependencies.
 if [ "$REQS_FLAG" == "reqs" ]
 then
-    pip3.12 install -r requirements.txt
+    pip3.9 install -r requirements.txt
 fi
 
 # Copy source files to installation dir.
