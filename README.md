@@ -67,7 +67,9 @@ AWS_IOT_KEY=your-private.pem.key
 AWS_IOT_ROOT=YourAmazonRootCA1.pem
 ```
 
-### 3.3 Install Python and Rust
+### 3.3 Install Python
+
+From source, Python 3.12, not recommended:
 
 ```bash
 # It takes 3 hours without test, more with it.
@@ -78,6 +80,16 @@ sudo bash setup_rust.sh
 
 # After both languages get installed, restart your ssh connection
 exit
+```
+
+From `apt`:
+
+```bash
+sudo apt update
+sudo apt upgrade
+sudo apt install software-properties-common
+sudo apt update
+sudo apt install python3.9-full
 ```
 
 ### 3.4 Deploy into your Pi
