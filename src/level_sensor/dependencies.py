@@ -8,7 +8,7 @@ from .sensor.SerialGravityWaterLevelSensor import SerialGravityWaterLevelSensor,
 
 def initialize_sensor():
     
-    sensor_type = os.environ.get("WATER_SENSOR_TYPE", "dummy")
+    sensor_type = os.environ.get("WATER_SENSOR", "dummy")
 
     assert sensor_type in ("discrete", "gravity", "dummy"), f"Sensor type not supported: '{sensor_type}'"
 
