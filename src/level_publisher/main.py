@@ -24,14 +24,6 @@ assert aws_iot_cert is not None, "Missing AWS IoT cert"
 assert aws_iot_key is not None, "Missing AWS IoT key"
 assert aws_iot_root is not None, "Missing AWS IoT root"
 
-# Adjust relative path for IoT files
-local_sensor_endpoint = "iot/" + local_sensor_endpoint
-aws_iot_host = "iot/" + aws_iot_host
-aws_iot_topic = "iot/" + aws_iot_topic
-aws_iot_cert = "iot/" + aws_iot_cert
-aws_iot_key = "iot/" + aws_iot_key
-aws_iot_root = "iot/" + aws_iot_root
-
 # Runtime variables.
 week_seconds = 60 * 60 * 24 * 7
 
