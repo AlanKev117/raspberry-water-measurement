@@ -5,7 +5,7 @@ from fastapi.templating import Jinja2Templates
 
 from .handlers.handlers import SensorHandlers
 
-from .tools.misc import initialize_sensor
+from .dependencies import initialize_sensor
 
 sensor = initialize_sensor()
 handlers = SensorHandlers(sensor)
