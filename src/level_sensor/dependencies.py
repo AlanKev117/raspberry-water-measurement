@@ -15,8 +15,10 @@ def initialize_sensor():
     if sensor_type == "discrete":
         # Create a DiscreteWaterLevelSensor
         pins = json.loads(os.environ.get("WATER_PINS"))
+        offset = int(os.environ.get("WATER_OFFSET", "0"))
+        pull_up = os.environ.get("WATER_PULL_UP", "false") == "true"
         assert type(pins) == list and type(pins[0]) == int
-        sensor = DiscreteWaterLevelSensor(pins)
+        sensor = DiscreteWaterLevelSensor(pins, offset=offset, pull_up=pull_up)
     
     elif sensor_type == "gravity":
         # Create a SerialGravityWaterLevelSensor

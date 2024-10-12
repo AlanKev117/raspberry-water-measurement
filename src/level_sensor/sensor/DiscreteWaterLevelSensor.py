@@ -14,15 +14,18 @@ WRONG_ORDER_WARN = "Cables in the discrete sensor are misplaced."
 
 class DiscreteWaterLevelSensor(WaterLevelSensor):
 
-    def __init__(self, pin_numbers=[1,2,3,4,5,6,7,8,9,10]):
+    def __init__(self, pins, offset=0, pull_up=False):
         
         # Assert resolution limits so there's no conflict with gpiozero.
-        resolution = len(pin_numbers)
+        resolution = len(pins)
         assert MIN_RESOLUTION <= resolution <= MAX_RESOLUTION, RESOLUTION_WARN
         self.resolution = resolution
 
+        # Assign offset
+        self.offset = offset
+
         # Map pin numbers to input objects
-        self.pins = [DigitalInputDevice(pin, pull_up=True) for pin in pin_numbers]
+        self.pins = [DigitalInputDevice(pin, pull_up=pull_up) for pin in pins]
 
 
     def get_percentage(self):
@@ -36,15 +39,16 @@ class DiscreteWaterLevelSensor(WaterLevelSensor):
         if active_marks != last_active:
             print(f"Warning: some sensors might be damaged - 0 {marks} {len(marks) - 1}")
 
-        percentage = int(last_active / self.resolution * 100)
+        percentage = int(last_active / self.resolution * (100 - self.offset) + self.offset)
         return percentage
 
 
     def is_charging(self):
-        # TODO: refactor once new hardware is implemented.
+        # TODO: implement once we have hardware.
         return False
 
     def get_temperature(self):
+        # TODO: implement once we have hardware
         return 0.0
 
     def get_digital_marks(self):

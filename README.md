@@ -67,20 +67,7 @@ AWS_IOT_KEY=your-private.pem.key
 AWS_IOT_ROOT=YourAmazonRootCA1.pem
 ```
 
-### 3.3 Install Python
-
-From source, Python 3.12, not recommended:
-
-```bash
-# It takes 3 hours without test, more with it.
-sudo bash setup_python.sh [test] # optional flag to run `make test`
-
-# It takes 5 minutes
-sudo bash setup_rust.sh
-
-# After both languages get installed, restart your ssh connection
-exit
-```
+### 3.3 Install Python 3.9
 
 From `apt`:
 
