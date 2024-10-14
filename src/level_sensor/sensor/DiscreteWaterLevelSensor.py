@@ -10,6 +10,8 @@ MIN_RESOLUTION = 1
 RESOLUTION_WARN = "Resolution must be between {} and {}."
 RESOLUTION_WARN = RESOLUTION_WARN.format(MIN_RESOLUTION, MAX_RESOLUTION)
 
+OFFSET_WARN = "Offset cannot be a negative value."
+
 WRONG_ORDER_WARN = "Cables in the discrete sensor are misplaced."
 
 class DiscreteWaterLevelSensor(WaterLevelSensor):
@@ -22,7 +24,18 @@ class DiscreteWaterLevelSensor(WaterLevelSensor):
         self.resolution = resolution
 
         # Assign offset
+        assert offset >= 0, OFFSET_WARN
         self.offset = offset
+
+        # Pre-calculate levels for each pin based on the offset and resolution.
+        if self.offset > 0:
+            self.levels = [0]
+            for i in range(self.resolution):
+                self.levels.append(int(i / (self.resolution - 1) * (100 - self.offset) + self.offset))
+        else:
+            self.levels = [0]
+            for i in range(self.resolution):
+                self.levels.append(int((i + 1) / self.resolution * 100))
 
         # Map pin numbers to input objects
         self.pins = [DigitalInputDevice(pin, pull_up=pull_up) for pin in pins]
@@ -36,10 +49,12 @@ class DiscreteWaterLevelSensor(WaterLevelSensor):
         active_marks = sum(marks)
         last_active = self.get_last_active(marks)
 
+        # We validate last active sensor matches the total number of active sensors
         if active_marks != last_active:
             print(f"Warning: some sensors might be damaged - 0 {marks} {len(marks) - 1}")
 
-        percentage = int(last_active / self.resolution * (100 - self.offset) + self.offset)
+        percentage = self.levels[last_active]
+
         return percentage
 
 
