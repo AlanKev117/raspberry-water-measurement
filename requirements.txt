@@ -7,3 +7,4 @@ adafruit-circuitpython-ads1x15==2.2.26
 adafruit-circuitpython-mpu6050==1.2.4
 requests==2.32.3
 AWSIoTPythonSDK==1.5.4
+Jinja2==3.1.4
