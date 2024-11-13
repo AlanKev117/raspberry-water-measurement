@@ -51,7 +51,7 @@ class DiscreteWaterLevelSensor(WaterLevelSensor):
 
         # We validate last active sensor matches the total number of active sensors
         if active_marks != last_active:
-            print(f"Warning: some sensors might be damaged - 0 {marks} {len(marks) - 1}")
+            print(f"[WARNING] - Some sensors might be damaged - 0 {marks} {len(marks) - 1}")
 
         percentage = self.levels[last_active]
 

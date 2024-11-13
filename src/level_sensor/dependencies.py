@@ -12,12 +12,17 @@ def initialize_sensor():
 
     assert sensor_type in ("discrete", "gravity", "dummy"), f"Sensor type not supported: '{sensor_type}'"
 
+    print(f"[INFO] - Sensor type: {sensor_type}")
+
     if sensor_type == "discrete":
         # Create a DiscreteWaterLevelSensor
         pins = json.loads(os.environ.get("WATER_PINS"))
         offset = int(os.environ.get("WATER_OFFSET", "0"))
         pull_up = os.environ.get("WATER_PULL_UP", "false") == "true"
         assert type(pins) == list and type(pins[0]) == int
+        print(f"[INFO] - Pins: {pins}")
+        print(f"[INFO] - Offset: {offset}")
+        print(f"[INFO] - Pull-up: {pull_up}")
         sensor = DiscreteWaterLevelSensor(pins, offset=offset, pull_up=pull_up)
     
     elif sensor_type == "gravity":
