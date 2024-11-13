@@ -1,6 +1,6 @@
 fastapi==0.115.5
 gpiozero==2.0.1
-RPi.GPIO==0.7.1
+rpi-lgpio==0.6
 pigpio==1.78
 uvicorn[standard]==0.32.0
 adafruit-circuitpython-ads1x15==2.2.26
