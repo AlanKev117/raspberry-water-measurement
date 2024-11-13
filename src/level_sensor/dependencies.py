@@ -37,6 +37,7 @@ def initialize_sensor():
     
     else:
         # Create a dummy sensor
+        print("[INFO] - Dummy sensor created...")
         sensor = DummyWaterLevelSensor()
 
     return sensor
