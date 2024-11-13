@@ -76,7 +76,7 @@ sudo apt update
 sudo apt upgrade
 sudo apt install software-properties-common
 sudo apt update
-sudo apt install python3.9-full
+sudo apt install python3.11-full
 ```
 
 ### 3.4 Deploy into your Pi
